@@ -1,4 +1,5 @@
 APP_NAME="com.microsoft.Edge"
+APP_ID="${APP_NAME}Dev"
 APP_SRC="${APP_NAME}.yaml"
 APP_PKG="${APP_NAME}.flatpak"
 
@@ -10,4 +11,4 @@ rm -rf repo; mkdir repo
 flatpak-builder ${GPG_SETTINGS:-} --verbose --force-clean --ccache  --repo=repo  build ${APP_SRC}
 
 # Build .flatpak file
-flatpak build-bundle ${GPG_BUNDLE_SETTINGS} repo ${APP_PKG} ${APP_NAME}
+flatpak build-bundle ${GPG_BUNDLE_SETTINGS} repo ${APP_PKG} "${APP_ID}"
