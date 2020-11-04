@@ -1,0 +1,5 @@
+[Runtime]
+name=com.microsoft.EdgeDev.Debug
+
+[ExtensionOf]
+ref=app/com.microsoft.EdgeDev/x86_64/master

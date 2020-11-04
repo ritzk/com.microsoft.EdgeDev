@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>com.microsoft.Edge</id>
+  <launchable type="desktop-id">com.microsoft.Edge.desktop</launchable>
+  <name>Microsoft Edge (dev)</name>
+  <summary>The web browser from Microsoft</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <developer_name>Microsoft</developer_name>
+  <url type="homepage">https://www.microsoftedgeinsider.com/en-us/</url>
+  <url type="help">https://techcommunity.microsoft.com/t5/Microsoft-Edge-Insider/ct-p/MicrosoftEdgeInsider</url>
+  <url type="bugtracker">https://techcommunity.microsoft.com/t5/Microsoft-Edge-Insider/ct-p/MicrosoftEdgeInsider</url>
+  <description>
+    <p>
+    Microsoft Edge is a browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier.
+    </p>
+  </description>
+  <update_contact>khadgaray+flatpak_AT_gmail_DOT_com</update_contact>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release date="2020-10-29" version="88.0.680.1"/>
+  </releases>
+</component>

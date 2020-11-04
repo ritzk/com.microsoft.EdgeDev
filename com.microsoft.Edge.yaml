@@ -1,0 +1,97 @@
+app-id: com.microsoft.EdgeDev
+runtime: org.freedesktop.Platform
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+separate-locales: false
+command: edge
+tags:
+  - proprietary
+finish-args:
+  - --socket=wayland
+  - --socket=x11
+  - --share=ipc
+  # - --device=all
+  - --socket=pulseaudio
+  - --share=network
+  - --persist=.config
+  - --filesystem=xdg-download
+cleanup:
+  - /include
+  - /lib/*.a
+  - /lib/*.la
+  - /lib/pkgconfig
+  - /share/man
+modules:
+  - name: cpio
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://ftp.gnu.org/gnu/cpio/cpio-2.13.tar.gz
+        sha256: e87470d9c984317f658567c03bfefb6b0c829ff17dbf6b0de48d71a4c8f3db88 
+      - type: patch
+        path: cpio-mutiple-definition.patch
+  - name: rpm2cpio
+    buildsystem: simple
+    sources:
+      - type: archive
+        url: https://github.com/ruda/rpm2cpio/archive/2017.tar.gz
+        sha256: d266a4f49e65b5d05956502549ceb1d5671f927375ff71299069e6d92363297a
+      - type: patch
+        path: rpm2cpio.patch
+    build-commands:
+      - install -D rpm2cpio.py /app/bin/rpm2cpio
+  - name: zypak
+    sources:
+      - type: git
+        url: https://github.com/refi64/zypak
+        tag: v2020.10beta.3
+      - type: patch
+        path: zypack-edge.patch
+  - name: opera
+    buildsystem: simple
+    build-commands:
+      - install -D -t "${FLATPAK_DEST}/bin/" apply_extra
+      - install -Dm755 -t "${FLATPAK_DEST}/bin/" edge
+      - install -Dm644 -t "${FLATPAK_DEST}/share/appdata/" com.microsoft.Edge.appdata.xml 
+      - install -Dm644 -t "${FLATPAK_DEST}/share/applications/" com.microsoft.Edge.desktop
+      # - ARCH_TRIPLE="$(gcc --print-multiarch)" && ln -s "/usr/lib/${ARCH_TRIPLE}/libudev.so.1" /app/lib/libudev.so.0
+      - install -Dm644 product_logo_16_dev.png "${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/${FLATPAK_ID}.png"
+      - install -Dm644 product_logo_32_dev.png "${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/${FLATPAK_ID}.png"
+      - install -Dm644 product_logo_48_dev.png "${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/${FLATPAK_ID}.png"
+      - install -Dm644 product_logo_128_dev.png "${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/${FLATPAK_ID}.png"
+      - install -Dm644 product_logo_256_dev.png "${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png"
+    sources:
+      - type: file
+        path: icons/product_logo_16_dev.png
+      - type: file
+        path: icons/product_logo_32_dev.png
+      - type: file
+        path: icons/product_logo_48_dev.png
+      - type: file
+        path: icons/product_logo_128_dev.png
+      - type: file
+        path: icons/product_logo_256_dev.png
+      - type: file
+        path: com.microsoft.Edge.appdata.xml 
+      - type: file
+        path: com.microsoft.Edge.desktop
+      - type: extra-data
+        filename: edge.rpm
+        url: https://packages.microsoft.com/yumrepos/edge/microsoft-edge-dev-88.0.680.1-1.x86_64.rpm
+        sha256: 72a6c9ce02bc4422115fb09a1dddd21f95d4323a37f32452ec1829596f037aab
+        size: 91017875
+        only-arches": 
+          - "x86_64"
+      - type: script
+        dest-filename: apply_extra
+        commands:
+          - rpm2cpio edge.rpm | cpio -idmv
+          - mv ./opt/microsoft/msedge-dev  .
+          - rm -rf etc  opt  usr
+          - rm -rf edge.rpm
+      - type: script
+        dest-filename: edge
+        commands:
+          - "export TMPDIR=\"$XDG_RUNTIME_DIR/app/$FLATPAK_ID\""
+          # - "export LD_LIBRARY_PATH=/app/opera"
+          - "exec zypak-wrapper.sh /app/extra/msedge-dev/microsoft-edge-dev $@ 2>&1"

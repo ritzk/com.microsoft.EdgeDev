@@ -1,0 +1,26 @@
+[Application]
+name=com.microsoft.EdgeDev
+runtime=org.freedesktop.Platform/x86_64/20.08
+sdk=org.freedesktop.Sdk/x86_64/20.08
+tags=proprietary;
+command=edge
+
+[Context]
+shared=network;ipc;
+sockets=x11;wayland;pulseaudio;
+filesystems=xdg-download;
+persistent=.config;
+
+[Extra Data]
+name=edge.rpm
+checksum=72a6c9ce02bc4422115fb09a1dddd21f95d4323a37f32452ec1829596f037aab
+size=65577748
+uri=https://packages.microsoft.com/yumrepos/edge/microsoft-edge-dev-88.0.680.1-1.x86_64.rpm
+
+[Extension com.microsoft.EdgeDev.Debug]
+directory=lib/debug
+autodelete=true
+no-autodownload=true
+
+[Build]
+built-extensions=com.microsoft.EdgeDev.Debug;

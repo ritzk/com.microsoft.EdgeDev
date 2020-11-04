@@ -1,0 +1,5 @@
+#!/bin/sh
+rpm2cpio edge.rpm | cpio -idmv
+mv ./opt/microsoft/msedge-dev  .
+rm -rf etc  opt  usr
+rm -rf edge.rpm

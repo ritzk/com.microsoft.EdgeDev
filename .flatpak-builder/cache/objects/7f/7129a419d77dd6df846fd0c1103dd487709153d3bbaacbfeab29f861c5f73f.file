@@ -1,0 +1,5 @@
+#!/bin/sh
+rpm2cpio edge.rpm | cpio -idmv
+mv usr/lib64/opera .
+rm -rf usr
+rm -rf edge.rpm
